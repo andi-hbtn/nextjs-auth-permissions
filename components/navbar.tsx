@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "./ui/button";
 import { getAuthUser } from "@/lib/currentUser";
+import LogoutButton from "./Logout";
 
 export default async function Navbar() {
 
@@ -25,10 +26,7 @@ export default async function Navbar() {
                             <span className="text-sm text-gray-600">
                                 Hi, {user.firstname}
                             </span>
-                            <Link href="/logout">
-                                <Button variant="ghost">Logout</Button>
-                            </Link>
-
+                            <LogoutButton />
                         </> :
                         <>
                             <Link href="/login">

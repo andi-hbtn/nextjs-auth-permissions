@@ -8,12 +8,17 @@ export async function getAuthUser() {
         const cookieData = await cookies();
         const session = cookieData.get("session")?.value;
         if (!session) return null;
-
         const data = await decrypt(session);
+        const [row] = await db.query<UserType[]>("SELECT * from user WHERE id=?", [data?.userId]);
+        return row[0];
+    } catch (error) {
 
-        const [row] = await db.query<UserType[]>("SELECT * from user WHERE id=?", [data.userId]);
-        console.log("row---", row[0])
+    }
+}
 
+export async function getUserById(id: string) {
+    try {
+        const [row] = await db.query<UserType[]>("SELECT * from user WHERE id=?", [id]);
         return row[0];
     } catch (error) {
 

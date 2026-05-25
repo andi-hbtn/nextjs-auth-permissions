@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import * as Z from "zod";
 import { LoginSchema } from "@/ZodSchema/Auth.Schema";
 import { UserType } from "@/DataTypes/data.types";
-import { createSession } from "@/lib/session";
+import { createSession, removeSession } from "@/lib/session";
 
 export async function RegisterAction(prevState: any, formData: FormData) {
 
@@ -18,8 +18,6 @@ export async function RegisterAction(prevState: any, formData: FormData) {
 
     }
 }
-
-
 
 export async function LoginAction(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
@@ -63,5 +61,20 @@ export async function LoginAction(prevState: any, formData: FormData) {
             message: error instanceof Error ? error.message : "Unexpected error",
             status: false
         }
+    }
+}
+
+export async function LogoutUserAction(prevState: any, formData: FormData) {
+    try {
+        await removeSession();
+        return {
+            status: true,
+            message: "User logout successfully"
+        };
+    } catch (error) {
+        return {
+            status: false,
+            message: error instanceof Error ? error.message : "Logout failed"
+        };
     }
 }
