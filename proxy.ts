@@ -23,21 +23,6 @@ export async function proxy(request: NextRequest) {
         }
     }
 
-    // 🚫 Logged users can't access login/register
-    if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
-        if (session) {
-            try {
-                await decrypt(session);
-
-                return NextResponse.redirect(
-                    new URL("/dashboard", request.url)
-                );
-
-            } catch {
-                return NextResponse.next();
-            }
-        }
-    }
 
     return NextResponse.next();
 }
@@ -45,7 +30,5 @@ export async function proxy(request: NextRequest) {
 export const config = {
     matcher: [
         "/dashboard/:path*",
-        "/login",
-        "/register"
     ],
 };
